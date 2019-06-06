@@ -121,3 +121,5 @@ chinese_qq
 chinese_sc
 BERT_BASE_DIR
 tmp
+*.txt
+*.tsv
