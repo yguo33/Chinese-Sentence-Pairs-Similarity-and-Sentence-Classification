@@ -115,3 +115,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+.idea
+chinese_qq
+chinese_sc
+BERT_BASE_DIR
+tmp

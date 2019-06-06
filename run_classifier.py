@@ -374,6 +374,78 @@ class ColaProcessor(DataProcessor):
         return examples
 
 
+class ChineseQQPProcessor(DataProcessor):
+    """Processor for the Chinese QQP data set."""
+
+    def get_train_examples(self, data_dir):
+        return self._create_examples(
+            self._read_tsv(os.path.join(data_dir, 'train.tsv')), 'train'
+        )
+
+    def get_dev_examples(self, data_dir):
+        return self._create_examples(
+            self._read_tsv(os.path.join(data_dir, 'dev.tsv')), 'dev'
+        )
+
+    def get_test_examples(self, data_dir):
+        return self._create_examples(
+            self._read_tsv(os.path.join(data_dir, 'test.tsv')), 'test'
+        )
+
+    def get_labels(self):
+        return ['0', '1']
+
+    def _create_examples(self, lines, set_type):
+        examples = []
+        for (i, line) in enumerate(lines):
+            guid = "{}-{}".format(set_type, i)
+            if set_type == 'test':
+                text_a = tokenization.convert_to_unicode(line[0])
+                text_b = tokenization.convert_to_unicode(line[1])
+                label = '0'
+            else:
+                text_a = tokenization.convert_to_unicode(line[0])
+                text_b = tokenization.convert_to_unicode(line[1])
+                label = tokenization.convert_to_unicode(line[2])
+            examples.append(InputExample(guid=guid, text_a=text_a, text_b=text_b, label=label))
+        return examples
+
+
+class ChineseSCProcessor(DataProcessor):
+    """Processor for the Chinese QQP data set."""
+
+    def get_train_examples(self, data_dir):
+        return self._create_examples(
+            self._read_tsv(os.path.join(data_dir, 'train.tsv')), 'train'
+        )
+
+    def get_dev_examples(self, data_dir):
+        return self._create_examples(
+            self._read_tsv(os.path.join(data_dir, 'dev.tsv')), 'dev'
+        )
+
+    def get_test_examples(self, data_dir):
+        return self._create_examples(
+            self._read_tsv(os.path.join(data_dir, 'test.tsv')), 'test'
+        )
+
+    def get_labels(self):
+        return ['0', '1']
+
+    def _create_examples(self, lines, set_type):
+        examples = []
+        for (i, line) in enumerate(lines):
+            guid = "{}-{}".format(set_type, i)
+            if set_type == 'test':
+                text_a = tokenization.convert_to_unicode(line[0])
+                label = '0'
+            else:
+                text_a = tokenization.convert_to_unicode(line[0])
+                label = tokenization.convert_to_unicode(line[1])
+            examples.append(InputExample(guid=guid, text_a=text_a, label=label))
+        return examples
+
+
 def convert_single_example(ex_index, example, label_list, max_seq_length,
                            tokenizer):
     """Converts a single `InputExample` into a single `InputFeatures`."""
@@ -788,6 +860,8 @@ def main(_):
         "mnli": MnliProcessor,
         "mrpc": MrpcProcessor,
         "xnli": XnliProcessor,
+        'chinese_qqp': ChineseQQPProcessor,
+        'chinese_sc': ChineseSCProcessor
     }
 
     tokenization.validate_case_matches_checkpoint(FLAGS.do_lower_case,
